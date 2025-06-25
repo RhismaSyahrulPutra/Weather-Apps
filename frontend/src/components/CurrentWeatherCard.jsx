@@ -7,6 +7,7 @@ import {
   TbSunset,
 } from "react-icons/tb";
 import weatherIcons from "../utils/weatherIcons";
+import weatherConditions from "../utils/weatherConditions";
 
 const CurrentWeatherCard = ({
   current,
@@ -17,10 +18,10 @@ const CurrentWeatherCard = ({
   pressureUnit,
   setPressureUnit,
   isDay,
+  temperature,
 }) => {
-  const iconClass = weatherIcons[current.condition] || weatherIcons.Unknown;
-  const temperature =
-    unit === "C" ? current.tempC : (current.tempC * 9) / 5 + 32;
+  const conditionName = weatherConditions[current.condition] || "Unknown";
+  const iconClass = weatherIcons[conditionName] || weatherIcons.Unknown;
 
   return (
     <div className="bg-white/10 backdrop-blur-md rounded-2xl p-6 shadow-lg flex flex-col gap-4 justify-center min-h-[520px]">
@@ -29,7 +30,9 @@ const CurrentWeatherCard = ({
         <p className="text-blue-100 mb-4">
           {isDay ? "Siang Hari" : "Malam Hari"}
         </p>
-        <i className={`wi wi-${iconClass} text-8xl text-yellow-300 mb-4`} />
+        <i
+          className={`wi wi-${iconClass} text-8xl text-yellow-300 pt-8 mb-4`}
+        />
         <h2 className="text-6xl font-bold mb-2">
           {Math.round(temperature)}°{unit}
         </h2>
@@ -42,9 +45,16 @@ const CurrentWeatherCard = ({
       </div>
 
       <div className="grid grid-cols-2 gap-4 text-sm text-blue-100 mt-2 text-center">
+        {/* Humidity */}
         <div className="flex items-center justify-center gap-2">
-          <TbDroplet /> {current.humidity}% Kelembaban
+          <TbDroplet />
+          {current.humidity && current.humidity !== "-"
+            ? `${current.humidity}%`
+            : "-"}{" "}
+          Kelembaban
         </div>
+
+        {/* Wind */}
         <div className="flex items-center justify-center gap-2">
           <TbWind />
           {windUnit === "km/h"
@@ -58,11 +68,15 @@ const CurrentWeatherCard = ({
             ubah
           </button>
         </div>
+
+        {/* Pressure */}
         <div className="flex items-center justify-center gap-2">
           <TbGauge />
-          {pressureUnit === "hPa"
-            ? current.pressure
-            : (current.pressure * 0.0295).toFixed(2)}{" "}
+          {current.pressure && current.pressure !== "-"
+            ? pressureUnit === "hPa"
+              ? current.pressure
+              : (current.pressure * 0.0295).toFixed(2)
+            : "-"}{" "}
           {pressureUnit}
           <button
             className="text-xs underline ml-1"
@@ -73,6 +87,8 @@ const CurrentWeatherCard = ({
             ubah
           </button>
         </div>
+
+        {/* Sunrise & Sunset */}
         <div className="flex items-center justify-center gap-2">
           <TbSunrise /> {current.sunrise}
           <TbSunset className="ml-3" /> {current.sunset}

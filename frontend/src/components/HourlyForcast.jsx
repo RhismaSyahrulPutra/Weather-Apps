@@ -1,13 +1,18 @@
 import React from "react";
 import weatherIcons from "../utils/weatherIcons";
+import weatherConditions from "../utils/weatherConditions";
 
 const HourlyForecast = ({ forecastHourly }) => {
   return (
     <div>
-      <h3 className="text-lg font-semibold mb-3 text-center">Per Jam</h3>
+      <h3 className="text-lg font-semibold mb-3 text-center">
+        Prakiraan Per Jam
+      </h3>
       <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-5 gap-4">
         {forecastHourly.map((item, index) => {
-          const icon = weatherIcons[item.condition] || weatherIcons.Unknown;
+          const conditionName = weatherConditions[item.condition] || "Unknown";
+          const icon = weatherIcons[conditionName] || weatherIcons.Unknown;
+
           return (
             <div
               key={index}
