@@ -5,6 +5,11 @@
     <link rel="icon" type="image/svg+xml" href="/vite.svg" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Weather Apps</title>
+    <script>
+      if (!location.hash) {
+        location.replace(location.pathname + location.search + "#/");
+      }
+    </script>
   </head>
   <body>
     <div id="root"></div>
